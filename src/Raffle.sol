@@ -34,7 +34,7 @@ import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/V
  * @dev Implements Chainlink VRFv2.5
  */
 
-abstract contract Raffle is VRFConsumerBaseV2Plus {
+contract Raffle is VRFConsumerBaseV2Plus {
     /** Errors */
     error Raffle__NotEnoughETHSent();
     error Raffle_TransferFailed();
@@ -156,10 +156,10 @@ abstract contract Raffle is VRFConsumerBaseV2Plus {
 
     // CEI Checks , Effects , Interactions Pattern
 
-    function fullfillRandomWords(
-        // uint256 requestedId,
+    function fulfillRandomWords(
+        uint256 requestId,
         uint256[] calldata randomWords
-    ) internal virtual {
+    ) internal override {
         //Checks
         //conditionals
         //Effects
@@ -184,5 +184,9 @@ abstract contract Raffle is VRFConsumerBaseV2Plus {
      */
     function getEntranceFee() external view returns (uint256) {
         return I_ENTRANCE_FEE;
+    }
+
+    function getRaffleState() external view returns (RaffleState) {
+        return sRaffleState;
     }
 }
