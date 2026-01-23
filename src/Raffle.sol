@@ -127,7 +127,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
         return (upKeepNeeded, "");
     }
 
-    function pickWinner(bytes calldata /* performData */) external {
+    function performUpKeep(bytes calldata /* performData */) external {
         // check to see if enough time has passed
         (bool upKeepNeeded, ) = checkUpKeep("");
         if (!upKeepNeeded) {
@@ -188,5 +188,9 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     function getRaffleState() external view returns (RaffleState) {
         return sRaffleState;
+    }
+
+    function getPlayer(uint256 indexOfPlayer) external view returns (address) {
+        return sPlayers[indexOfPlayer];
     }
 }
