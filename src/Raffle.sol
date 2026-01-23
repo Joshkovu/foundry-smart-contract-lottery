@@ -69,6 +69,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
     /**Events  */
     event RaffleEntered(address indexed player);
     event WinnerPicked(address indexed winner);
+    event RequestRaffleWinner(uint256 indexed requestId);
 
     /** Modifiers */
 
@@ -127,7 +128,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
         return (upKeepNeeded, "");
     }
 
-    function pickWinner(bytes calldata /* performData */) external {
+    function performUpKeep(bytes calldata /* performData */) external {
         // check to see if enough time has passed
         (bool upKeepNeeded, ) = checkUpKeep("");
         if (!upKeepNeeded) {
@@ -151,10 +152,11 @@ contract Raffle is VRFConsumerBaseV2Plus {
                     VRFV2PlusClient.ExtraArgsV1({nativePayment: false})
                 )
             });
-        s_vrfCoordinator.requestRandomWords(request);
+        uint256 requestId = s_vrfCoordinator.requestRandomWords(request);
+        emit RequestRaffleWinner(requestId);
     }
 
-    // CEI Checks , Effects , Interactions Pattern
+    // CEI Checks , Effects , Interactions Patte rn
 
     function fulfillRandomWords(
         uint256 requestId,
@@ -188,5 +190,9 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     function getRaffleState() external view returns (RaffleState) {
         return sRaffleState;
+    }
+
+    function getPlayer(uint256 indexOfPlayer) external view returns (address) {
+        return sPlayers[indexOfPlayer];
     }
 }
