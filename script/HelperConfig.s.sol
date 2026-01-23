@@ -87,5 +87,6 @@ contract HelperConfig is CodeConstants, Script {
             callbackGasLimit: 500000,
             Link: address(linkToken)
         });
+        return localNetworkConfig;
     }
 }
