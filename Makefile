@@ -10,3 +10,5 @@ install:; forge install cyfrin/foundry-devops@0.2.2 && forge install smartcontra
 
 deploy-sepolia:
 	@forge script script/DeployRaffle.s.sol:DeployRaffle --rpc-url $(SEPOLIA_RPC_URL) --account default --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
+
+make sure to add a deploy-anvil 
