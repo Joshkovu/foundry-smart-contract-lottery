@@ -159,12 +159,13 @@ contract Raffle is VRFConsumerBaseV2Plus {
     // CEI Checks , Effects , Interactions Patte rn
 
     function fulfillRandomWords(
-        uint256 requestId,
+        uint256 /*requestId*/,
         uint256[] calldata randomWords
     ) internal override {
         //Checks
         //conditionals
         //Effects
+
         uint256 indexOfWinner = randomWords[0] % sPlayers.length;
         address payable recentWinner = sPlayers[indexOfWinner];
         sRecentWinner = recentWinner;
@@ -194,5 +195,13 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     function getPlayer(uint256 indexOfPlayer) external view returns (address) {
         return sPlayers[indexOfPlayer];
+    }
+
+    function getLastTimeStamp() external view returns (uint256) {
+        return sLasttimestamp;
+    }
+
+    function getRecentWinner() external view returns (address) {
+        return sRecentWinner;
     }
 }
