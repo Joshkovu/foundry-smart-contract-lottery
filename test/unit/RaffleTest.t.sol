@@ -105,6 +105,28 @@ contract RaffleTest is Test, CodeConstants {
     //challenge
     //testCheckUpKeepReturnsFalseIfEnoughTimeHasPassed
     //testCheckUpKeepReturnsTrueWhenParametersAreGood
+    function testCheckUpKeepReturnsFalseIfEnoughTimeHasPassed() public {
+        //Arrange
+        vm.warp(block.timestamp + interval + 1);
+        vm.roll(block.number + 1);
+        //Act
+        (bool upKeepNeeded, ) = raffle.checkUpKeep("");
+        //Assert
+        assert(!upKeepNeeded);
+    }
+
+    function testCheckUpKeepReturnsTrueWhenParametersAreGood() public {
+        //Arrange
+        vm.prank(PLAYER);
+        raffle.enterRaffle{value: entranceFee}();
+        vm.warp(block.timestamp + interval + 1);
+        vm.roll(block.number + 1);
+        //Act
+        (bool upKeepNeeded, ) = raffle.checkUpKeep("");
+        //Assert
+        assert(upKeepNeeded);
+    }
+
     /* PERFORM-UPKEEP */
     modifier raffleEntered() {
         vm.prank(PLAYER);
