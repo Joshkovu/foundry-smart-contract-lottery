@@ -23,7 +23,7 @@ contract DeployRaffle is Script {
             fundSubscription.fundSubscription(
                 config.vrfCoordinator,
                 config.subscriptionId,
-                config.Link,
+                config.link,
                 config.account
             );
         }

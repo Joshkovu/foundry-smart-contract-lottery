@@ -7,9 +7,9 @@ import {LinkToken} from "test/mocks/LinkToken.sol";
 
 abstract contract CodeConstants {
     /* mock VRF Values*/
-    uint96 public MOCK_BASE_FEE = 0.25 ether;
-    uint96 public MOCK_GAS_PRICE_LINK = 1E9;
-    int256 public MOCK_WEI_PER_UNIT_LINK = 4e15;
+    uint96 public mockBaseFee = 0.25 ether;
+    uint96 public mockGasPriceLink = 1E9;
+    int256 public mockWeiPerUnitLink = 4e15;
     uint256 public constant ETH_SEPOLIA_CHAIN_ID = 11155111;
     uint256 public constant LOCAL_CHAIN_ID = 31337;
 }
@@ -24,7 +24,7 @@ contract HelperConfig is CodeConstants, Script {
         bytes32 gasLane;
         uint256 subscriptionId;
         uint32 callbackGasLimit;
-        address Link;
+        address link;
         address account;
     }
     NetworkConfig public localNetworkConfig;
@@ -55,7 +55,7 @@ contract HelperConfig is CodeConstants, Script {
                 gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
                 subscriptionId: 110893844468701547643429379366552962934334108473997745437072251946493358603791,
                 callbackGasLimit: 500000,
-                Link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
+                link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
                 account: 0xE4C7cb7e38329b8AD5eee15597725B61F6b42F39
             });
     }
@@ -70,9 +70,9 @@ contract HelperConfig is CodeConstants, Script {
         }
         vm.startBroadcast();
         VRFCoordinatorV2_5Mock vrfCoordinatorMock = new VRFCoordinatorV2_5Mock(
-            MOCK_BASE_FEE,
-            MOCK_GAS_PRICE_LINK,
-            MOCK_WEI_PER_UNIT_LINK
+            mockBaseFee,
+            mockGasPriceLink,
+            mockWeiPerUnitLink
         );
         LinkToken linkToken = new LinkToken();
         // localNetworkConfig.vrfCoordinator = vrfCoordinator.address;
@@ -87,7 +87,7 @@ contract HelperConfig is CodeConstants, Script {
             gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
             subscriptionId: 0, // change this later
             callbackGasLimit: 500000,
-            Link: address(linkToken),
+            link: address(linkToken),
             account: 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
         });
         return localNetworkConfig;

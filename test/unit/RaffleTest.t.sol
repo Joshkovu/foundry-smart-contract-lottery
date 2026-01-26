@@ -23,7 +23,7 @@ contract RaffleTest is Test, CodeConstants {
     event RaffleEntered(address indexed player);
     event WinnerPicked(address indexed winner);
 
-    address public PLAYER = makeAddr("player");
+    address public player = makeAddr("player");
     uint256 public constant STARTING_PLAYER_BALANCE = 10 ether;
 
     function setUp() external {
@@ -40,7 +40,7 @@ contract RaffleTest is Test, CodeConstants {
         subscriptionId = config.subscriptionId;
         callbackGasLimit = config.callbackGasLimit;
 
-        vm.deal(PLAYER, STARTING_PLAYER_BALANCE);
+        vm.deal(player, STARTING_PLAYER_BALANCE);
         console.log("Setup complete!");
     }
 
@@ -52,7 +52,7 @@ contract RaffleTest is Test, CodeConstants {
 
     function testRaffleRevertsWhenYouDontPayEnough() public {
         //Arrange
-        vm.prank(PLAYER);
+        vm.prank(player);
         //Act / Assert
         vm.expectRevert(Raffle.Raffle__NotEnoughETHSent.selector);
         raffle.enterRaffle();
@@ -60,20 +60,20 @@ contract RaffleTest is Test, CodeConstants {
 
     function testRaffleRecordsPlayersWhenTheyEnter() public {
         //Arrange
-        vm.prank(PLAYER);
+        vm.prank(player);
         raffle.enterRaffle{value: entranceFee}();
         //Act
         address playerRecorded = raffle.getPlayer(0);
         // Assert
-        assert(playerRecorded == PLAYER);
+        assert(playerRecorded == player);
         console.log("test passed!");
     }
 
     function testEnteringRaffleEmitsEvent() public {
-        vm.prank(PLAYER);
+        vm.prank(player);
 
         vm.expectEmit(true, false, false, false, address(raffle));
-        emit RaffleEntered(PLAYER);
+        emit RaffleEntered(player);
 
         raffle.enterRaffle{value: entranceFee}();
     }
@@ -84,7 +84,7 @@ contract RaffleTest is Test, CodeConstants {
     {
         raffle.performUpKeep("");
         vm.expectRevert(Raffle.Raffle__NotOpen.selector);
-        vm.prank(PLAYER);
+        vm.prank(player);
         raffle.enterRaffle{value: entranceFee}();
     }
 
@@ -117,7 +117,7 @@ contract RaffleTest is Test, CodeConstants {
 
     function testCheckUpKeepReturnsTrueWhenParametersAreGood() public {
         //Arrange
-        vm.prank(PLAYER);
+        vm.prank(player);
         raffle.enterRaffle{value: entranceFee}();
         vm.warp(block.timestamp + interval + 1);
         vm.roll(block.number + 1);
@@ -129,7 +129,7 @@ contract RaffleTest is Test, CodeConstants {
 
     /* PERFORM-UPKEEP */
     modifier raffleEntered() {
-        vm.prank(PLAYER);
+        vm.prank(player);
         raffle.enterRaffle{value: entranceFee}();
         vm.warp(block.timestamp + interval + 1);
         vm.roll(block.number + 1);
@@ -150,7 +150,7 @@ contract RaffleTest is Test, CodeConstants {
         uint256 currentBalance = 0;
         uint256 numPlayers = 0;
         Raffle.RaffleState rState = raffle.getRaffleState();
-        vm.prank(PLAYER);
+        vm.prank(player);
         raffle.enterRaffle{value: entranceFee}();
         currentBalance = currentBalance + entranceFee;
         numPlayers = 1;

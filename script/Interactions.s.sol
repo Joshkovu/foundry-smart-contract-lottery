@@ -8,7 +8,7 @@ import {LinkToken} from "test/mocks/LinkToken.sol";
 import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 
 contract CreateSubscription is Script {
-    function CreateSubscriptionUsingConfig() public returns (uint256, address) {
+    function createSubscriptionUsingConfig() public returns (uint256, address) {
         HelperConfig helperConfig = new HelperConfig();
         address vrfCoordinator = helperConfig.getConfig().vrfCoordinator;
         address account = helperConfig.getConfig().account;
@@ -33,7 +33,7 @@ contract CreateSubscription is Script {
     }
 
     function run() public {
-        CreateSubscriptionUsingConfig();
+        createSubscriptionUsingConfig();
     }
 }
 
@@ -45,7 +45,7 @@ contract FundSubscription is Script, CodeConstants {
         address vrfCoordinator = helperConfig.getConfig().vrfCoordinator;
         uint256 subscriptionId = helperConfig.getConfig().subscriptionId;
         address account = helperConfig.getConfig().account;
-        address linkToken = helperConfig.getConfig().Link;
+        address linkToken = helperConfig.getConfig().link;
         fundSubscription(vrfCoordinator, subscriptionId, linkToken, account);
     }
 
@@ -82,12 +82,12 @@ contract FundSubscription is Script, CodeConstants {
 }
 
 contract AddConsumer is Script {
-    function addConsumerConfig(address most_recently_deployed) public {
+    function addConsumerConfig(address mostRecentlyDeployed) public {
         HelperConfig helperConfig = new HelperConfig();
         uint256 subId = helperConfig.getConfig().subscriptionId;
         address vrfcoordinator = helperConfig.getConfig().vrfCoordinator;
         address account = helperConfig.getConfig().account;
-        addConsumer(most_recently_deployed, vrfcoordinator, subId, account);
+        addConsumer(mostRecentlyDeployed, vrfcoordinator, subId, account);
     }
 
     function addConsumer(
